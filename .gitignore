@@ -1,0 +1,48 @@
+# Environment and secrets
+.env
+.env.local
+.env*.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Generated results (regenerable)
+results/*.json
+results/*.png
+
+# Logs
+*.log
+
+# Cache
+.cache/
+.mypy_cache/
