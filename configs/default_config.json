@@ -1,0 +1,20 @@
+{
+  "experiment": {
+    "num_episodes": 20,
+    "num_facts_per_episode": 10,
+    "num_questions_per_episode": 2
+  },
+  "environment": {
+    "delay_length": 3,
+    "distractor_density": 0.3
+  },
+  "agent": {
+    "memory_capacity": 5,
+    "retrieval_budget": 3,
+    "learning_rate": 0.01
+  },
+  "evaluation": {
+    "generate_plots": true,
+    "save_detailed_results": true
+  }
+}
