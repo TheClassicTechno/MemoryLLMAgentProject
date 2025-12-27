@@ -4,6 +4,9 @@ Personal project by Juli Huang. Self-exploring concepts such as agent policy, me
 
 In this project, I research how LLM-based agents should decide what to remember under strict memory and cost constraints, using online learning and controlled evaluation rather than heuristic memory systems.
 
+
+## Datasets I used
+I created a Synthetic Streaming QA dataset and used a small subset of the SQuAD dataset.
 ## Project Structure
 
 ### Phase 1: Baseline & Ablation Studies
