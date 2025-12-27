@@ -79,17 +79,29 @@ class MemorySelectionPolicy:
         Args:
             fact: The fact that was written or skipped
             decision: Whether the fact was stored
-            reward: Reward signal (1.0 if decision helped answer correctly, 0.0 otherwise)
+            reward: Reward signal (1.0 if good decision, 0.0 if bad)
         """
         features = np.array(self.feature_extractor.extract_features(fact))
         
-        # Simple gradient update
-        # Positive reward: increase likelihood of decision
-        # Negative reward: decrease likelihood of decision
-        gradient = features * (reward - 0.5)
+        # Compute current policy probability
+        logits = np.dot(self.weights, features) + self.bias
+        prob = 1.0 / (1.0 + np.exp(-logits))
         
+        # Policy gradient: reinforce the decision made
+        # If decision was good (reward > 0.5), increase likelihood
+        # If decision was bad (reward < 0.5), decrease likelihood
+        
+        if decision:
+            # We decided to store - update toward higher prob with high reward
+            gradient_scale = reward - prob  # Larger if reward is high
+        else:
+            # We decided not to store - update toward lower prob with high reward
+            gradient_scale = (1.0 - reward) - (1.0 - prob)
+        
+        # Apply update
+        gradient = features * gradient_scale
         self.weights += self.learning_rate * gradient
-        self.bias += self.learning_rate * (reward - 0.5)
+        self.bias += self.learning_rate * gradient_scale
     
     def update_episode(self, facts_and_decisions: List[Tuple[Fact, bool]], rewards: List[float]):
         """
