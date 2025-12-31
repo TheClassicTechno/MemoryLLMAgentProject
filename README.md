@@ -68,3 +68,50 @@ python3 check_ablation_results.py
 | Random | 43.0% | Negative control |
 
 **Budget Scaling (K=5,10,20):** Embedding maintains 76-82% across all budgets, showing robustness to memory constraints.
+
+
+
+## Common Questions and Answers
+
+**Q1: Why not just use embedding similarity?**
+
+**Answer:**
+
+Embedding similarity is one of my strongest baselines, achieving 82.5% accuracy. However, i implemented multiple baseline comparisons to understand when different memory selection strategies do well. results show that embedding similarity outperforms recency (48.5%), frequency (53.0%), and type-based heuristics (66.5%), but each strategy has different computational costs and use cases. The goal is to establish which selection method works best under memory constraints.
+
+**Q2: Why compare multiple baselines instead of just picking one strategy?**
+
+**Answer:**
+
+Different memory selection strategies make different trade-offs. Recency-based selection (FIFO) is computationally cheapest but performs poorly (48.5%). Embedding similarity is most accurate (82.5%) but requires computing similarity scores for every query. Frequency-based selection captures fact importance but doesn't adapt to query context. By comparing these baselines across controlled conditions, we can make more accurate and informed design choices for memory-constrained LLM agents.
+
+
+**Q3: What does the evaluation techniques actually measure?**
+
+**Answer:**
+
+i evaluate how different memory selection strategies perform under strict memory budgets (K=5, 10, 20 facts) on a streaming QA task. The agent must decide which facts to keep or discard as new information arrives, then answer questions using only its limited memory. i measure accuracy across 100 episodes on synthetic data and validate on a SQuAD subset to ensure the results generalize to real question-answering scenarios.
+
+
+**Q4: Why test on both synthetic and real data?**
+
+**Answer:**
+
+Synthetic data gives controlled evaluation with known distributions. we can systematically vary memory capacity (limit on what info it can hold), delay length (how long ago important info happened), and distractor density (how much junk/noise) to understand each baseline's behavior. SQuAD validation (10/10 examples correct with embedding baseline) confirms that my findings aren't artifacts of synthetic data generation and that the memory selection strategies work on real-world question-answering tasks.
+
+
+**Q5: What did you learn from the budget scaling experiments?**
+
+**Answer:**
+
+i tested memory budgets of K={5, 10, 20} facts across all baselines. Embedding similarity maintains 76-82% accuracy across all budgets, showing robustness to memory constraints. In contrast, recency and frequency baselines degrade significantly at lower budgets. This demonstrates that query-aware semantic matching is not just more accurate, but also more stable when memory is severely limited, a critical finding for resource-constrained deployments.
+
+
+**Q6: What are the next steps?**
+
+**Answer:**
+
+I currently establishes strong empirical baselines for memory selection. Future work could implement adaptive policies using reinforcement learning (e.g., contextual bandits) that learn to combine multiple signals: recency, frequency, and similarity-based on question type and context. 
+
+
+
